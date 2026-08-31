@@ -1,0 +1,41 @@
+{
+  "name": "dsh-kimi-formula",
+  "version": "0.1.0",
+  "description": "Kimi (Moonshot AI) official Formula tools for DeepSeek Harness: a ctx.web search provider backed by the Formula API chat loop, plus model-facing tools for the remaining official formulas (convert, rethink, random-choice, mew, memory, excel, date, base64, fetch).",
+  "keywords": [
+    "dsh-plugin",
+    "deepseek-harness",
+    "kimi",
+    "kimi-k3",
+    "moonshot-ai",
+    "web-search",
+    "formula-api",
+    "llm-tools",
+    "ai-agent",
+    "plugin"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Medesol/dsh-kimi-formula.git"
+  },
+  "homepage": "https://github.com/Medesol/dsh-kimi-formula#readme",
+  "bugs": "https://github.com/Medesol/dsh-kimi-formula/issues",
+  "license": "MIT",
+  "type": "module",
+  "main": "src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "src"
+  ],
+  "engines": {
+    "node": ">=22.19.0"
+  },
+  "dependencies": {
+    "@deepseek-ai/dsh-tools": "0.1.2-alpha.3",
+    "@deepseek-ai/dsh-web": "0.1.2-alpha.3",
+    "@deepseek-ai/schemastery": "3.18.2"
+  }
+}

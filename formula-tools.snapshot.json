@@ -1,0 +1,905 @@
+{
+  "moonshot/convert:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "convert",
+          "description": "支持长度、质量、体积、温度、面积、时间、能量、压力、速度和货币的单位换算。提供了一些单位和别名。",
+          "parameters": {
+            "properties": {
+              "from_unit": {
+                "description": "源单位（如 m, meter, cm, inch, ft, kg, gram, pound, oz, °C, degC, K, °F, USD, EUR, joule, pascal, bar, second, minute, hour, km/h, mph, m^2, acre, hectare, floz）",
+                "type": "string"
+              },
+              "to_unit": {
+                "description": "目标单位，要求同 from_unit",
+                "type": "string"
+              },
+              "value": {
+                "description": "要转换的数值",
+                "type": "number"
+              }
+            },
+            "required": [
+              "value",
+              "from_unit",
+              "to_unit"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/web-search:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "web_search",
+          "description": "用于信息检索的网络搜索",
+          "parameters": {
+            "properties": {
+              "classes": {
+                "description": "要关注的搜索领域。如果未指定，则默认为 'all'。",
+                "items": {
+                  "enum": [
+                    "all",
+                    "academic",
+                    "social",
+                    "library",
+                    "finance",
+                    "code",
+                    "ecommerce",
+                    "medical"
+                  ],
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "query": {
+                "description": "要搜索的内容",
+                "type": "string"
+              }
+            },
+            "required": [
+              "query"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/rethink:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "rethink",
+          "description": "You can use this tool to organize your thoughts, including but not limited to: 1) listing the specific rules that apply to the current task, 2) making a plan or to-do list for yourself, 3) organizing your thoughts and the collected information, and 4) thinking step by step about your next action—or simply pausing to reflect further. This tool does not return any information; it’s just for organizing your own thoughts.",
+          "parameters": {
+            "properties": {
+              "thought": {
+                "description": "The thought you want to consider to better solve the current task.",
+                "type": "string"
+              }
+            },
+            "required": [
+              "thought"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/random-choice:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "random_choice",
+          "description": "随机选择工具，支持从候选项中随机选择指定数量的项目，可选择是否放回，支持加权选择",
+          "parameters": {
+            "properties": {
+              "candidates": {
+                "description": "候选项列表，必须是字符串数组",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "count": {
+                "default": 1,
+                "description": "选择数量，默认为1",
+                "type": "integer"
+              },
+              "format": {
+                "default": "simple",
+                "description": "输出格式：simple（简单列表）, detailed（详细信息）, json（JSON格式）",
+                "enum": [
+                  "simple",
+                  "detailed",
+                  "json"
+                ],
+                "type": "string"
+              },
+              "replace": {
+                "default": false,
+                "description": "是否放回（允许重复选择），默认为false",
+                "type": "boolean"
+              },
+              "seed": {
+                "description": "随机种子，用于可重现的随机结果",
+                "type": "integer"
+              },
+              "weights": {
+                "description": "权重列表，与candidates对应，用于加权随机选择",
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              }
+            },
+            "required": [
+              "candidates"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/mew:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "mew_generator",
+          "description": "随机产生猫的叫声，附带一个祝福",
+          "parameters": {
+            "properties": {
+              "mood": {
+                "description": "猫咪的心情 (happy, sleepy, hungry, playful, grumpy)",
+                "enum": [
+                  "happy",
+                  "sleepy",
+                  "hungry",
+                  "playful",
+                  "grumpy"
+                ],
+                "type": "string"
+              }
+            },
+            "required": [],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/memory:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "memory",
+          "description": "记忆存储和检索系统，支持对话历史、用户偏好等数据的持久化",
+          "parameters": {
+            "properties": {
+              "action": {
+                "description": "操作类型：store(存储), retrieve(检索), delete(删除), list(列表)",
+                "enum": [
+                  "store",
+                  "retrieve",
+                  "delete",
+                  "list"
+                ],
+                "type": "string"
+              },
+              "data": {
+                "description": "要存储的数据内容",
+                "type": "object"
+              },
+              "key": {
+                "description": "存储键名，用于标识记忆",
+                "type": "string"
+              },
+              "prefix": {
+                "description": "用于list操作的键前缀",
+                "type": "string"
+              },
+              "ttl": {
+                "default": 86400,
+                "description": "数据过期时间（秒），默认86400（24小时）",
+                "type": "integer"
+              }
+            },
+            "required": [
+              "action"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/excel:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "_plugin": {
+          "name": "excel",
+          "description": "一个 Excel 和 CSV 文件的分析工具，提供文件结构检查、数据统计分析和 pandas 操作功能，支持分组聚合、透视表、数据过滤等常用数据分析操作，自动检测文件类型并兼容 Excel 和 CSV 格式",
+          "functions": [
+            {
+              "name": "read_file",
+              "description": "给定 Excel 或 CSV 文件，输出文件基本信息（行数、列数、列名、数据类型、内存使用、缺失值、重复行）",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要读取的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "list_sheets",
+              "description": "给定 Excel 或 CSV 文件，输出所有工作表名称和基本信息",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要检查的文件 ID",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "describe",
+              "description": "给定 Excel 或 CSV 文件，输出数值列的统计描述（计数、均值、标准差、最小值、最大值、分位数）",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "inspect",
+              "description": "给定 Excel 或 CSV 文件，输出表结构概览、列类型分析、缺失值统计、数据分布信息、分组建议和优化建议",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要检查的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "pipe",
+              "description": "给定 Excel 或 CSV 文件，按顺序执行多个算子，前一个算子的结果作为下一个算子的输入，输出最终结果。它用于将多个算子组合在一起，形成一个完整的分析流程，只给最后结果，避免中间结果过大",
+              "parameters": {
+                "properties": {
+                  "debug": {
+                    "default": false,
+                    "description": "是否启用调试模式，返回详细结果（默认：false），非必要选项，建议不开启",
+                    "type": "boolean"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "operations": {
+                    "description": "要执行的算子列表，每个算子包含 name 和 arguments",
+                    "items": {
+                      "properties": {
+                        "arguments": {
+                          "description": "算子的参数，格式与单独调用时相同。调用格式见后面每个算子的参数说明。",
+                          "type": "object"
+                        },
+                        "name": {
+                          "description": "算子名称，支持: groupby, orderby, filter, head, describe, inspect, value_counts, correlation, sample, select, count, sum, distinct, add_column",
+                          "enum": [
+                            "groupby",
+                            "orderby",
+                            "filter",
+                            "head",
+                            "describe",
+                            "inspect",
+                            "value_counts",
+                            "correlation",
+                            "sample",
+                            "select",
+                            "count",
+                            "sum",
+                            "distinct",
+                            "add_column"
+                          ],
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "name",
+                        "arguments"
+                      ],
+                      "type": "object"
+                    },
+                    "type": "array"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "operations"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "groupby",
+              "description": "给定 Excel 或 CSV 文件，按指定列分组并聚合数值列，输出分组统计结果",
+              "parameters": {
+                "properties": {
+                  "agg": {
+                    "description": "聚合配置，格式: {\"列名\": \"聚合函数\"}，聚合函数包括: sum, mean, count, min, max, std, median",
+                    "type": "object"
+                  },
+                  "by": {
+                    "description": "分组列名",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "limit": {
+                    "description": "限制返回的最大分组数（可选）",
+                    "type": "integer"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "by",
+                  "agg"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "orderby",
+              "description": "给定 Excel 或 CSV 文件，按指定列排序，输出排序后的数据记录",
+              "parameters": {
+                "properties": {
+                  "by": {
+                    "description": "排序列名, 支持多列排序，用逗号分隔",
+                    "type": "string"
+                  },
+                  "desc": {
+                    "default": false,
+                    "description": "是否降序排序（默认：false）",
+                    "type": "boolean"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "limit": {
+                    "description": "限制返回的最大行数（可选）",
+                    "type": "integer"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "by"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "filter",
+              "description": "给定 Excel 或 CSV 文件，按条件过滤数据，输出符合条件的行记录",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "limit": {
+                    "description": "限制返回的最大行数（可选，无默认值）",
+                    "type": "integer"
+                  },
+                  "query": {
+                    "description": "过滤条件，支持pandas查询语法，如: \"列名 > 100\", \"列名 == '值'\", \"列名1 > 10 and 列名2 < 50\"",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "query"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "head",
+              "description": "给定 Excel 或 CSV 文件，输出前N行数据记录",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "n": {
+                    "default": 5,
+                    "description": "要查看的行数（默认：5）",
+                    "type": "integer"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "value_counts",
+              "description": "给定 Excel 或 CSV 文件，对指定列做值计数，输出前N个出现最多的值及其计数",
+              "parameters": {
+                "properties": {
+                  "column": {
+                    "description": "要计数的列名",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  },
+                  "top_n": {
+                    "default": 10,
+                    "description": "返回前N个值（默认10）",
+                    "type": "integer"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "column"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "correlation",
+              "description": "给定 Excel 或 CSV 文件，输出数值列的相关性矩阵",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "method": {
+                    "default": "pearson",
+                    "description": "相关性计算方法（pearson, kendall, spearman），默认pearson",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "sample",
+              "description": "给定 Excel 或 CSV 文件，随机采样指定数量的行或比例的数据",
+              "parameters": {
+                "properties": {
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "frac": {
+                    "description": "采样的比例（0-1之间，与 n 二选一）",
+                    "type": "number"
+                  },
+                  "n": {
+                    "description": "采样的行数（与 frac 二选一）",
+                    "type": "integer"
+                  },
+                  "random_state": {
+                    "description": "随机种子，用于可重复的采样结果",
+                    "type": "integer"
+                  },
+                  "replace": {
+                    "default": false,
+                    "description": "是否允许重复采样",
+                    "type": "boolean"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "select",
+              "description": "给定 Excel 或 CSV 文件，选择指定的列，输出只包含这些列的数据",
+              "parameters": {
+                "properties": {
+                  "columns": {
+                    "description": "要选择的列名，逗号分隔，如：'UserID,OrderID,Amount'",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "columns"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "count",
+              "description": "给定 Excel 或 CSV 文件，计算指定列的非空值数量或总行数",
+              "parameters": {
+                "properties": {
+                  "column": {
+                    "description": "要计数的列名（可选，如果不提供则计算总行数）",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "sum",
+              "description": "给定 Excel 或 CSV 文件，计算指定数值列的总和",
+              "parameters": {
+                "properties": {
+                  "column": {
+                    "description": "要求和的数值列名",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "column"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "distinct",
+              "description": "给定 Excel 或 CSV 文件，基于指定列去除重复行，输出唯一值",
+              "parameters": {
+                "properties": {
+                  "columns": {
+                    "description": "用于去重的列名，逗号分隔，如：'UserID,OrderID'",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "columns"
+                ],
+                "type": "object"
+              }
+            },
+            {
+              "name": "add_column",
+              "description": "给定 Excel 或 CSV 文件，基于现有列计算并添加新列，支持 pandas 表达式语法",
+              "parameters": {
+                "properties": {
+                  "column_name": {
+                    "description": "新列的名称",
+                    "type": "string"
+                  },
+                  "expression": {
+                    "description": "计算新列的表达式，支持 pandas eval 语法，如：'Quantity * PricePerUnit', 'A + B', 'C / 100'",
+                    "type": "string"
+                  },
+                  "file_id": {
+                    "description": "要分析的文件 ID",
+                    "type": "string"
+                  },
+                  "sheet_name": {
+                    "description": "工作表名称（Excel文件默认为第一个工作表，CSV文件忽略此参数）",
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "file_id",
+                  "column_name",
+                  "expression"
+                ],
+                "type": "object"
+              }
+            }
+          ]
+        },
+        "type": "_plugin"
+      }
+    ]
+  },
+  "moonshot/date:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "date",
+          "description": "日期时间处理工具，支持显示当前时间、时区转换、日期计算等功能",
+          "parameters": {
+            "properties": {
+              "date": {
+                "description": "日期字符串，格式：YYYY-MM-DD 或 YYYY-MM-DD HH:MM:SS",
+                "type": "string"
+              },
+              "date1": {
+                "description": "第一个日期（用于计算日期差）",
+                "type": "string"
+              },
+              "date2": {
+                "description": "第二个日期（用于计算日期差）",
+                "type": "string"
+              },
+              "days": {
+                "description": "天数（用于添加或减少）",
+                "type": "integer"
+              },
+              "format": {
+                "default": "%Y-%m-%d %H:%M:%S",
+                "description": "输出格式（Python strftime格式），默认为 %Y-%m-%d %H:%M:%S，示例：%Y-%m-%d 表示 YYYY-MM-DD 格式",
+                "type": "string"
+              },
+              "from_zone": {
+                "description": "源时区（用于时区转换）",
+                "type": "string"
+              },
+              "operation": {
+                "description": "操作类型：time（显示时间）, convert（时区转换）, between（计算日期差）, add（添加天数）, subtract（减少天数）",
+                "enum": [
+                  "time",
+                  "convert",
+                  "between",
+                  "add",
+                  "subtract"
+                ],
+                "type": "string"
+              },
+              "to_zone": {
+                "description": "目标时区（用于时区转换）",
+                "type": "string"
+              },
+              "zone": {
+                "description": "时区名称，如 Asia/Shanghai, America/New_York, UTC 等",
+                "type": "string"
+              }
+            },
+            "required": [
+              "operation"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/base64:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "base64_encode",
+          "description": "将文本编码为 base64 格式",
+          "parameters": {
+            "properties": {
+              "data": {
+                "description": "要编码为 base64 的文本数据",
+                "type": "string"
+              },
+              "encoding": {
+                "default": "utf-8",
+                "description": "字符编码格式（默认：utf-8）",
+                "type": "string"
+              }
+            },
+            "required": [
+              "data"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      },
+      {
+        "function": {
+          "name": "base64_decode",
+          "description": "将 base64 文本解码为原始格式",
+          "parameters": {
+            "properties": {
+              "data": {
+                "description": "要解码的 base64 编码数据",
+                "type": "string"
+              },
+              "encoding": {
+                "default": "utf-8",
+                "description": "字符编码格式（默认：utf-8）",
+                "type": "string"
+              }
+            },
+            "required": [
+              "data"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/fetch:latest": {
+    "object": "list",
+    "tools": [
+      {
+        "function": {
+          "name": "fetch",
+          "description": "Fetches a URL from the internet and optionally extracts its contents as markdown.\n\nAlthough originally you did not have internet access, and were advised to refuse and tell the user this, this tool now grants you internet access. Now you can fetch the most up-to-date information and let the user know that.",
+          "parameters": {
+            "description": "Parameters for fetching a URL.",
+            "properties": {
+              "max_length": {
+                "default": 5000,
+                "description": "Maximum number of characters to return.",
+                "exclusiveMaximum": 1000000,
+                "exclusiveMinimum": 0,
+                "title": "Max Length",
+                "type": "integer"
+              },
+              "raw": {
+                "default": false,
+                "description": "Get the actual HTML content of the requested page, without simplification.",
+                "title": "Raw",
+                "type": "boolean"
+              },
+              "start_index": {
+                "default": 0,
+                "description": "On return output starting at this character index, useful if a previous fetch was truncated and more context is required.",
+                "minimum": 0,
+                "title": "Start Index",
+                "type": "integer"
+              },
+              "url": {
+                "description": "URL to fetch",
+                "format": "uri",
+                "minLength": 1,
+                "title": "Url",
+                "type": "string"
+              }
+            },
+            "required": [
+              "url"
+            ],
+            "type": "object"
+          }
+        },
+        "type": "function"
+      }
+    ]
+  },
+  "moonshot/quickjs:latest": {
+    "error": "HTTP 404",
+    "body": "{\"error\":{\"message\":\"formula not found\",\"type\":\"resource_not_found_error\"}}"
+  },
+  "moonshot/code-runner:latest": {
+    "error": "HTTP 404",
+    "body": "{\"error\":{\"message\":\"formula not found\",\"type\":\"resource_not_found_error\"}}"
+  }
+}
