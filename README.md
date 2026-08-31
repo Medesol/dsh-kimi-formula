@@ -21,16 +21,25 @@ DSH's built-in `web_search` tool ships with three search providers (DeepSeek, Ex
 
 ## Install
 
-```bash
-# 1. Clone this repo anywhere
-git clone https://github.com/Medesol/dsh-kimi-formula.git
-cd dsh-kimi-formula
+**One command** — pnpm (which `dsh plugin` forwards to) fetches straight from GitHub and installs the runtime dependencies automatically:
 
-# 2. Install it into the DSH web profile (a thin pnpm forwarder)
-dsh plugin --profile web add "$PWD"
+```bash
+dsh plugin --profile web add github:Medesol/dsh-kimi-formula
 # → "dsh-kimi-formula declares no dsh.bundle — installed as a plain dependency"
 #    (expected; the plugin is activated by a patch row below)
 ```
+
+<details>
+<summary>Alternative: install from a local clone (for development)</summary>
+
+```bash
+git clone https://github.com/Medesol/dsh-kimi-formula.git
+cd dsh-kimi-formula
+pnpm install   # a bare-path add links the directory; its deps resolve from here
+dsh plugin --profile web add "$PWD"
+```
+
+</details>
 
 Edit the profile's user patch layer `~/.dsh/profiles/web/cordis.patch.yml`:
 

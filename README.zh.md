@@ -20,16 +20,25 @@ DSH 内置的 `web_search` 工具自带三个搜索提供方（DeepSeek、Exa、
 
 ## 安装
 
-```bash
-# 1. 克隆本仓库
-git clone https://github.com/Medesol/dsh-kimi-formula.git
-cd dsh-kimi-formula
+**一条命令**——`dsh plugin` 底层是 pnpm，会直接从 GitHub 拉取并自动安装运行时依赖：
 
-# 2. 装进 DSH web profile（dsh plugin 是 pnpm 的薄封装）
-dsh plugin --profile web add "$PWD"
+```bash
+dsh plugin --profile web add github:Medesol/dsh-kimi-formula
 # → 提示 "declares no dsh.bundle — installed as a plain dependency" 属正常，
 #    插件靠下面的 patch 行激活
 ```
+
+<details>
+<summary>备选：从本地克隆安装（用于二次开发）</summary>
+
+```bash
+git clone https://github.com/Medesol/dsh-kimi-formula.git
+cd dsh-kimi-formula
+pnpm install   # 裸路径 add 是 link 安装，依赖从这里解析
+dsh plugin --profile web add "$PWD"
+```
+
+</details>
 
 编辑 profile 用户补丁层 `~/.dsh/profiles/web/cordis.patch.yml`：
 
