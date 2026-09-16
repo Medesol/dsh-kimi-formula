@@ -14,6 +14,9 @@
  * @module dsh-kimi-formula
  */
 
+import { appendFile } from 'node:fs/promises'
+import { homedir } from 'node:os'
+import { join } from 'node:path'
 import z from '@deepseek-ai/schemastery'
 import { KimiApi } from './kimi-api.js'
 import {
@@ -85,6 +88,27 @@ const BASE_URL_ENV = 'KIMI_FORMULA_BASE_URL'
 export const KIMI_FORMULA_SETTINGS_NAMESPACE = 'kimi-formula'
 
 /**
+ * Best-effort side record of one outgoing Kimi search request.
+ *
+ * This deliberately does NOT append to the Session log: DSH's persistence read
+ * path refuses a log containing an event type it does not know unless the
+ * writer sets the envelope's `ignorable: true` marker, and `Session.append()`
+ * exposes no way to set it. Appending `web/kimi-search-llm-request` therefore
+ * made every affected Session unreadable, un-resumable and un-exportable
+ * (session-log-export answered HTTP 500). Keep observability out of the log.
+ * @param {object} request - the recorded search request summary.
+ * @returns {Promise<void>} resolves after the record is written or skipped.
+ */
+async function recordSearchRequest(request) {
+  try {
+    const home = process.env.DSH_HOME ?? join(homedir(), '.dsh')
+    await appendFile(join(home, 'kimi-search-requests.jsonl'), JSON.stringify({ time: Date.now(), ...request }) + '\n')
+  } catch {
+    // Debug-only record: an unwritable side log must never fail a search.
+  }
+}
+
+/**
  * Project one resolved config into per-operation options. Credential resolution
  * prefers the credentials service (the web Models page writes it) and falls
  * back to the launching environment.
@@ -117,7 +141,7 @@ function resolveOptions(ctx, config) {
     maxSearchRounds: config.searchMaxRounds ?? KIMI_DEFAULT_MAX_SEARCH_ROUNDS,
     timeoutMs: config.toolsTimeoutMs ?? DEFAULT_TOOLS_TIMEOUT_MS,
     recordRequest: (request) => {
-      ctx.get('agents')?.currentInitiator()?.session?.append?.('web/kimi-search-llm-request', request)
+      void recordSearchRequest(request)
     },
   }
 }
